@@ -59,6 +59,7 @@ switch:
       mcp23xxx: mcp23017_hub
       number: 12
       inverted: true
+      mode: output
 
 time:
   - platform: sntp
@@ -73,18 +74,18 @@ sensor:
     pin: 35
   - platform: template
     name: "Battery Voltage"
+    accuracy_decimals: 3
+    device_class: "voltage"
+    state_class: "measurement"
+    unit_of_measurement: "V"
     lambda: |-
-      id(battery_read_mosfet).turn_on();
+      id(battery_read_mosfet).turn_off();
       delay(1);
       float adc = id(battery_voltage).sample();
-      id(battery_read_mosfet).turn_off();
+      id(battery_read_mosfet).turn_on();
       return adc;
     filters:
       - multiply: 2
-
-  - platform: homeassistant
-    id: mainfloor_temp
-    entity_id: sensor.mainfloor_temp
 
 binary_sensor:
   - platform: status
@@ -246,7 +247,7 @@ display:
     /////////////////////////
     // Header row
     //it.strftime(margin, margin, id(helvetica_48), COLOR_OFF, TextAlign::TOP_LEFT, "%Y-%m-%d", id(esptime).now());
-    //it.strftime(width/2, margin, id(helvetica_48), COLOR_OFF, TextAlign::TOP_CENTER, "%H:%M", id(esptime).now());
+    //it.strftime(width-10, top_margin, id(helvetica_48), COLOR_OFF, TextAlign::TOP_RIGHT, "%H:%M", id(esptime).now());
     //if (id(system_status).state) {
     //  it.print(width-margin, margin, id(helvetica_48), COLOR_OFF, TextAlign::TOP_RIGHT, "Online");
     //} else {
