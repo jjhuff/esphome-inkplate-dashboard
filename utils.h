@@ -6,7 +6,10 @@ const char* LIGHTBULB = "\U000F0335";
 const char* SHADES_DOWN = "\U000F111C";
 const char* SHADES_UP = "\U000F111E";
 const char* FOOD = "\U000F025A";
-
+const char* BATTERY_HIGH = "\U000F12A3";
+const char* BATTERY_MEDIUM = "\U000F12A2";
+const char* BATTERY_LOW = "\U000F12A1";
+const char* BATTERY_OUTLINE = "\U000F008E";
 
 class Button: public touchscreen::TouchListener {
   public:
@@ -36,7 +39,7 @@ class Button: public touchscreen::TouchListener {
       display.rectangle(x, y, width, height, COLOR_OFF);
 
       if (this->icon_) {
-        display.print(center_x, center_y-10, &id(font_90), this->color_, TextAlign::CENTER, this->icon_);
+        display.print(center_x, center_y-10, &id(icons_90), this->color_, TextAlign::CENTER, this->icon_);
       }
       if (this->text_) {
         display.print(center_x, y + height-5, &id(helvetica_32), COLOR_OFF, TextAlign::BOTTOM_CENTER, this->text_);
