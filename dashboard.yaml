@@ -7,6 +7,9 @@ esphome:
     then:
       - component.update: inkplate_display
 
+preferences:
+  flash_write_interval: 10min
+
 esp32:
   board: esp-wrover-kit
   framework:
@@ -64,6 +67,16 @@ light:
     default_transition_length: 0.2s
     name: 'Backlight'
 
+script:
+  - id: backlight_script
+    mode: restart
+    then:
+      - light.turn_on: backlight
+      - delay: 4s
+      - light.turn_off:
+          id: backlight
+          transition_length: 1s
+
 switch:
   - platform: restart
     name: "Reboot"
@@ -71,6 +84,7 @@ switch:
 
   - platform: gpio
     id: battery_read_mosfet
+    internal: true
     pin:
       mcp23xxx: mcp23017_hub
       number: 9
@@ -91,6 +105,12 @@ time:
     id: esptime
     timezone: America/Los_Angeles
 
+text_sensor:
+  - platform: template
+    name: "Battery Status"
+    id: battery_status
+    update_interval: never
+
 sensor:
   - platform: adc
     id: battery_voltage_raw
@@ -104,7 +124,7 @@ sensor:
     device_class: "voltage"
     state_class: "measurement"
     unit_of_measurement: "V"
-    update_interval: 600s
+    update_interval: 10min
     lambda: |-
       id(battery_read_mosfet).turn_off();
       delay(1);
@@ -113,6 +133,37 @@ sensor:
       return adc;
     filters:
       - multiply: 2
+    on_value_range:
+      - above: 4
+        then:
+          - light.turn_off: backlight
+          - text_sensor.template.publish:
+              id: battery_status
+              state: "HIGH"
+          - component.update: inkplate_display
+      - below: 4.001
+        above: 3.6
+        then:
+          - light.turn_off: backlight
+          - text_sensor.template.publish:
+              id: battery_status
+              state: "MEDIUM"
+          - component.update: inkplate_display
+      - below: 3.599
+        above: 3.4
+        then:
+          - light.turn_off: backlight
+          - text_sensor.template.publish:
+              id: battery_status
+              state: "LOW"
+          - component.update: inkplate_display
+      - below: 3.399
+        then:
+          - light.turn_off: backlight
+          - text_sensor.template.publish:
+              id: battery_status
+              state: "EMPTY"
+          - component.update: inkplate_display
 
 binary_sensor:
   - platform: status
@@ -218,6 +269,7 @@ font:
       - "\U000F111C" # mdi-window-shutter
       - "\U000F111E" # mdi-window-shutter-open
       - "\U000F025A" # mdi-food
+      - "\U000F008E" # mdi-battery-outline
   - file: 'materialdesignicons-webfont.ttf'
     id: icons_32
     size: 32
@@ -236,11 +288,7 @@ touchscreen:
       number: 10
     on_touch:
       then:
-        - light.turn_on: backlight
-        - delay: 4s
-        - light.turn_off: backlight
-
-
+        - script.execute: backlight_script
 
 display:
 - platform: inkplate6
@@ -276,6 +324,7 @@ display:
 
   lambda: |-
     auto width = it.get_width();
+    auto height = it.get_height();
     auto left_margin = 25;
     auto right_margin = 25;
     auto top_margin = 25;
@@ -297,16 +346,21 @@ display:
     //  it.print(width-margin, margin, id(helvetica_48), COLOR_OFF, TextAlign::TOP_RIGHT, "Offline");
     //}
 
-    const char* bat_icon = BATTERY_OUTLINE;
-    auto bat_voltage = id(battery_voltage).state;
-    if (bat_voltage > 4.0) {
-      bat_icon = BATTERY_HIGH;
-    } else if (bat_voltage > 3.6) {
-      bat_icon = BATTERY_MEDIUM;
-    } else if (bat_voltage > 3.4) {
-      bat_icon = BATTERY_LOW;
+    auto bat_status = id(battery_status).state;
+    if (bat_status == "EMPTY") {
+      it.print(width/2, height/2, id(icons_90), COLOR_OFF, TextAlign::CENTER, BATTERY_OUTLINE);
+      return;
+    } else {
+      const char* bat_icon = BATTERY_OUTLINE;
+      if (bat_status == "HIGH") {
+        bat_icon = BATTERY_HIGH;
+      } else if (bat_status == "MEDIUM") {
+        bat_icon = BATTERY_MEDIUM;
+      } else if (bat_status == "LOW") {
+        bat_icon = BATTERY_LOW;
+      }
+      it.print(width-right_margin, top_margin, id(icons_32), COLOR_OFF, TextAlign::TOP_RIGHT, bat_icon);
     }
-    it.print(width-right_margin, top_margin, id(icons_32), COLOR_OFF, TextAlign::TOP_RIGHT, bat_icon);
     
     /////////////////////////
     // Rows
