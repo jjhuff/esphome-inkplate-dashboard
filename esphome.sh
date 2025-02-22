@@ -5,4 +5,4 @@ if [ -c "/dev/ttyUSB0" ]; then
   ARGS+=" --device /dev/ttyUSB0"
 fi
 
-docker run --rm -it  -v "${PWD}":/config $ARGS esphome/esphome:2023.6.4 $@
+docker run --rm -it  -v "${PWD}":/config $ARGS esphome/esphome:2025.2.0 $@

@@ -28,7 +28,7 @@ class Button: public touchscreen::TouchListener {
       touchscreen->register_listener(this);
     }
 
-    void render(DisplayBuffer &display) {
+    void render(Display &display) {
       auto x = this->x_;
       auto y = this->y_;
       auto width = this->width_;
@@ -95,7 +95,7 @@ class Row {
       }
     }
 
-    void render(DisplayBuffer &display) {
+    void render(Display &display) {
       if(this->label_) {
         display.print(this->x_, this->y_, &id(helvetica_48), COLOR_OFF, TextAlign::TOP_LEFT, this->label_);
       }

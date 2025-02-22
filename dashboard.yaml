@@ -25,6 +25,7 @@ api:
   password: ""
 
 ota:
+  platform: esphome
   password: ""
 
 web_server:
@@ -66,7 +67,7 @@ light:
     id: backlight
     restore_mode: ALWAYS_OFF
     default_transition_length: 0.2s
-    name: 'Backlight'
+    name: "Backlight"
 
 script:
   - id: backlight_script
@@ -92,7 +93,7 @@ switch:
       inverted: true
 
   - platform: gpio
-    name: 'Touchscreen Enabled'
+    name: "Touchscreen Enabled"
     internal: true
     restore_mode: ALWAYS_ON
     pin:
@@ -172,88 +173,88 @@ binary_sensor:
     id: system_status
     on_state:
       then:
-          - component.update: inkplate_display
+        - component.update: inkplate_display
 
   - platform: template
     id: kitchen_bright
     on_press:
       then:
-      - homeassistant.service:
-          service: button.press
-          data:
-            entity_id: button.main_kitchen_position_1_keypad_bright
+        - homeassistant.service:
+            service: button.press
+            data:
+              entity_id: button.main_kitchen_position_1_keypad_bright
 
   - platform: template
     id: kitchen_dim
     on_press:
       then:
-      - homeassistant.service:
-          service: button.press
-          data:
-            entity_id: button.main_kitchen_position_1_keypad_dim
+        - homeassistant.service:
+            service: button.press
+            data:
+              entity_id: button.main_kitchen_position_1_keypad_dim
 
   - platform: template
     id: kitchen_off
     on_press:
       then:
-      - homeassistant.service:
-          service: button.press
-          data:
-            entity_id: button.main_kitchen_position_1_keypad_off
+        - homeassistant.service:
+            service: button.press
+            data:
+              entity_id: button.main_kitchen_position_1_keypad_off
 
   - platform: template
     id: kitchen_dining
     on_press:
       then:
-      - homeassistant.service:
-          service: button.press
-          data:
-            entity_id:  button.main_kitchen_position_1_keypad_dining
+        - homeassistant.service:
+            service: button.press
+            data:
+              entity_id: button.main_kitchen_position_1_keypad_dining
 
   - platform: template
     id: living_bright
     on_press:
       then:
-      - homeassistant.service:
-          service: button.press
-          data:
-            entity_id: button.main_patio_sliding_doors_position_1_keypad_on
+        - homeassistant.service:
+            service: button.press
+            data:
+              entity_id: button.main_patio_sliding_doors_position_1_keypad_on
 
   - platform: template
     id: living_dim
     on_press:
       then:
-      - homeassistant.service:
-          service: button.press
-          data:
-            entity_id: button.main_patio_sliding_doors_position_1_keypad_dim
+        - homeassistant.service:
+            service: button.press
+            data:
+              entity_id: button.main_patio_sliding_doors_position_1_keypad_dim
 
   - platform: template
     id: living_off
     on_press:
       then:
-      - homeassistant.service:
-          service: button.press
-          data:
-            entity_id: button.main_patio_sliding_doors_position_1_keypad_off
+        - homeassistant.service:
+            service: button.press
+            data:
+              entity_id: button.main_patio_sliding_doors_position_1_keypad_off
 
   - platform: template
     id: open_blinds
     on_press:
       then:
-      - homeassistant.service:
-          service: automation.trigger
-          data:
-            entity_id: automation.open_blinds
+        - homeassistant.service:
+            service: automation.trigger
+            data:
+              entity_id: automation.open_blinds
 
   - platform: template
     id: close_blinds
     on_press:
       then:
-      - homeassistant.service:
-          service: automation.trigger
-          data:
-            entity_id: automation.close_blinds
+        - homeassistant.service:
+            service: automation.trigger
+            data:
+              entity_id: automation.close_blinds
 
 font:
   #  - file: "helvetica.ttf"
@@ -265,7 +266,7 @@ font:
   - file: "helvetica.ttf"
     id: helvetica_32
     size: 32
-  - file: 'materialdesignicons-webfont.ttf'
+  - file: "materialdesignicons-webfont.ttf"
     id: icons_90
     size: 90
     glyphs: # https://pictogrammers.github.io/@mdi/font/5.3.45/
@@ -274,7 +275,7 @@ font:
       - "\U000F111E" # mdi-window-shutter-open
       - "\U000F025A" # mdi-food
       - "\U000F008E" # mdi-battery-outline
-  - file: 'materialdesignicons-webfont.ttf'
+  - file: "materialdesignicons-webfont.ttf"
     id: icons_32
     size: 32
     glyphs: # https://pictogrammers.github.io/@mdi/font/5.3.45/
@@ -295,109 +296,107 @@ touchscreen:
         - script.execute: backlight_script
 
 display:
-- platform: inkplate6
-  id: inkplate_display
-  model: inkplate_6_plus
-  greyscale: true
-  partial_updating: false
-  update_interval: never
+  - platform: inkplate6
+    id: inkplate_display
+    model: inkplate_6_plus
+    greyscale: true
+    partial_updating: false
+    update_interval: never
 
-  ckv_pin: 32
-  sph_pin: 33
-  gmod_pin:
-    mcp23xxx: mcp23017_hub
-    number: 1
-  gpio0_enable_pin:
-    mcp23xxx: mcp23017_hub
-    number: 8
-  oe_pin:
-    mcp23xxx: mcp23017_hub
-    number: 0
-  spv_pin:
-    mcp23xxx: mcp23017_hub
-    number: 2
-  powerup_pin:
-    mcp23xxx: mcp23017_hub
-    number: 4
-  wakeup_pin:
-    mcp23xxx: mcp23017_hub
-    number: 3
-  vcom_pin:
-    mcp23xxx: mcp23017_hub
-    number: 5
+    ckv_pin: 32
+    sph_pin: 33
+    gmod_pin:
+      mcp23xxx: mcp23017_hub
+      number: 1
+    gpio0_enable_pin:
+      mcp23xxx: mcp23017_hub
+      number: 8
+    oe_pin:
+      mcp23xxx: mcp23017_hub
+      number: 0
+    spv_pin:
+      mcp23xxx: mcp23017_hub
+      number: 2
+    powerup_pin:
+      mcp23xxx: mcp23017_hub
+      number: 4
+    wakeup_pin:
+      mcp23xxx: mcp23017_hub
+      number: 3
+    vcom_pin:
+      mcp23xxx: mcp23017_hub
+      number: 5
 
-  lambda: |-
-    auto width = it.get_width();
-    auto height = it.get_height();
-    auto left_margin = 25;
-    auto right_margin = 25;
-    auto top_margin = 25;
+    lambda: |-
+      auto width = it.get_width();
+      auto height = it.get_height();
+      auto left_margin = 25;
+      auto right_margin = 25;
+      auto top_margin = 25;
 
-    auto black = Color(0, 0, 0);
-    auto red = Color(255, 0, 0);
-    auto green = Color(0, 255, 0);
-    auto white = Color(255, 255, 255);
+      auto black = Color(0, 0, 0);
+      auto red = Color(255, 0, 0);
+      auto green = Color(0, 255, 0);
+      auto white = Color(255, 255, 255);
 
-    it.fill(COLOR_ON);
+      it.fill(COLOR_ON);
 
-    /////////////////////////
-    // Header row
-    //it.strftime(margin, margin, id(helvetica_48), COLOR_OFF, TextAlign::TOP_LEFT, "%Y-%m-%d", id(esptime).now());
-    //it.strftime(width-10, top_margin, id(helvetica_48), COLOR_OFF, TextAlign::TOP_RIGHT, "%H:%M", id(esptime).now());
+      /////////////////////////
+      // Header row
+      //it.strftime(margin, margin, id(helvetica_48), COLOR_OFF, TextAlign::TOP_LEFT, "%Y-%m-%d", id(esptime).now());
+      //it.strftime(width-10, top_margin, id(helvetica_48), COLOR_OFF, TextAlign::TOP_RIGHT, "%H:%M", id(esptime).now());
 
-    if (id(system_status).state) {
-      it.print(width-right_margin-40, top_margin, id(helvetica_32), COLOR_OFF, TextAlign::TOP_RIGHT, "Online");
-    } else {
-      it.print(width-right_margin-40, top_margin, id(helvetica_32), COLOR_OFF, TextAlign::TOP_RIGHT, "Offline");
-    }
-
-    auto bat_status = id(battery_status).state;
-    if (bat_status == "EMPTY") {
-      it.print(width/2, height/2, id(icons_90), COLOR_OFF, TextAlign::CENTER, BATTERY_OUTLINE);
-      return;
-    } else {
-      const char* bat_icon = BATTERY_OUTLINE;
-      if (bat_status == "HIGH") {
-        bat_icon = BATTERY_HIGH;
-      } else if (bat_status == "MEDIUM") {
-        bat_icon = BATTERY_MEDIUM;
-      } else if (bat_status == "LOW") {
-        bat_icon = BATTERY_LOW;
+      if (id(system_status).state) {
+        it.print(width-right_margin-40, top_margin, id(helvetica_32), COLOR_OFF, TextAlign::TOP_RIGHT, "Online");
+      } else {
+        it.print(width-right_margin-40, top_margin, id(helvetica_32), COLOR_OFF, TextAlign::TOP_RIGHT, "Offline");
       }
-      it.print(width-right_margin, top_margin, id(icons_32), COLOR_OFF, TextAlign::TOP_RIGHT, bat_icon);
-    }
-    
-    /////////////////////////
-    // Rows
-    auto cell_size = 150;
-    auto row_space = 250;
 
-    static Row* kitchen = nullptr;
-    static Row* living = nullptr;
-    static Row* shades = nullptr;
+      auto bat_status = id(battery_status).state;
+      if (bat_status == "EMPTY") {
+        it.print(width/2, height/2, id(icons_90), COLOR_OFF, TextAlign::CENTER, BATTERY_OUTLINE);
+        return;
+      } else {
+        const char* bat_icon = BATTERY_OUTLINE;
+        if (bat_status == "HIGH") {
+          bat_icon = BATTERY_HIGH;
+        } else if (bat_status == "MEDIUM") {
+          bat_icon = BATTERY_MEDIUM;
+        } else if (bat_status == "LOW") {
+          bat_icon = BATTERY_LOW;
+        }
+        it.print(width-right_margin, top_margin, id(icons_32), COLOR_OFF, TextAlign::TOP_RIGHT, bat_icon);
+      }
 
-    if (kitchen == nullptr) {
-      kitchen = new Row(left_margin, top_margin, cell_size, "Kitchen");
-      kitchen->add(new Button(LIGHTBULB, "Bright", id(kitchen_bright)));
-      kitchen->add(new Button(LIGHTBULB, "Dim", id(kitchen_dim), red));
-      kitchen->add(new Button(LIGHTBULB, "Off", id(kitchen_off), green));
-      kitchen->add(new Button(FOOD, "Dining", id(kitchen_dining)));
-      kitchen->layout(id(ts));
+      /////////////////////////
+      // Rows
+      auto cell_size = 150;
+      auto row_space = 250;
 
-      living = new Row(left_margin, top_margin + row_space, cell_size, "Living Room");
-      living->add(new Button(LIGHTBULB, "Bright", id(living_bright)));
-      living->add(new Button(LIGHTBULB, "Dim", id(living_dim), red));
-      living->add(new Button(LIGHTBULB, "Off", id(living_off), green));
-      living->layout(id(ts));
+      static Row* kitchen = nullptr;
+      static Row* living = nullptr;
+      static Row* shades = nullptr;
 
-      shades = new Row(left_margin, top_margin + 2*row_space, cell_size, "Shades");
-      shades->add(new Button(SHADES_UP, "Up", id(open_blinds)));
-      shades->add(new Button(SHADES_DOWN, "Down", id(close_blinds)));
-      shades->layout(id(ts));
-    }
+      if (kitchen == nullptr) {
+        kitchen = new Row(left_margin, top_margin, cell_size, "Kitchen");
+        kitchen->add(new Button(LIGHTBULB, "Bright", id(kitchen_bright)));
+        kitchen->add(new Button(LIGHTBULB, "Dim", id(kitchen_dim), red));
+        kitchen->add(new Button(LIGHTBULB, "Off", id(kitchen_off), green));
+        kitchen->add(new Button(FOOD, "Dining", id(kitchen_dining)));
+        kitchen->layout(id(ts));
 
-    kitchen->render(it);
-    living->render(it);
-    shades->render(it);
+        living = new Row(left_margin, top_margin + row_space, cell_size, "Living Room");
+        living->add(new Button(LIGHTBULB, "Bright", id(living_bright)));
+        living->add(new Button(LIGHTBULB, "Dim", id(living_dim), red));
+        living->add(new Button(LIGHTBULB, "Off", id(living_off), green));
+        living->layout(id(ts));
 
+        shades = new Row(left_margin, top_margin + 2*row_space, cell_size, "Shades");
+        shades->add(new Button(SHADES_UP, "Up", id(open_blinds)));
+        shades->add(new Button(SHADES_DOWN, "Down", id(close_blinds)));
+        shades->layout(id(ts));
+      }
 
+      kitchen->render(it);
+      living->render(it);
+      shades->render(it);
